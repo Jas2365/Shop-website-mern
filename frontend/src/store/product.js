@@ -7,7 +7,7 @@ export const useProductStore = create((set) => ({
     if (!newproduct.name || !newproduct.price || !newproduct.image) {
       return { success: false, message: "Please fill in all fields." };
     }
-    const res = await fetch("/api/products", {
+    const res = await fetch(`${import.meta.env.BACKEND_BASEURL}/api/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,14 +20,17 @@ export const useProductStore = create((set) => ({
     return { success: true, message: "Product created successfully" };
   },
   fetchProduct: async () => {
-    const res = await fetch("/api/products");
+    const res = await fetch(`${import.meta.env.BACKEND_BASEURL}/api/products`);
     const data = await res.json();
     set({ products: data.data });
   },
   deleteProduct: async (pid) => {
-    const res = await fetch(`/api/products/${pid}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `${import.meta.env.BACKEND_BASEURL}/api/products/${pid}`,
+      {
+        method: "DELETE",
+      }
+    );
     const data = await res.json();
     if (!data.success) return { success: false, message: data.message };
 
@@ -37,13 +40,16 @@ export const useProductStore = create((set) => ({
     return { success: true, message: data.message };
   },
   updateProduct: async (pid, updateProductData) => {
-    const res = await fetch(`/api/products/${pid}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updateProductData),
-    });
+    const res = await fetch(
+      `${import.meta.env.BACKEND_BASEURL}/api/products/${pid}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateProductData),
+      }
+    );
     const data = await res.json();
     if (!data.success) return { success: false, message: data.message };
 
